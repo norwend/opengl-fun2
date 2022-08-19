@@ -19,6 +19,10 @@ public:
 
     GLFWwindow* get_win_ptr() const { return win_; }
 
+    void close() {
+	glfwSetWindowShouldClose(win_, true);
+    }
+    
     inline void mouse_callback(GLFWcursorposfun func) {
 	glfwSetCursorPosCallback(win_, func);
     }
