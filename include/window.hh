@@ -25,8 +25,11 @@ public:
     inline void scroll_callback(GLFWscrollfun func) {
 	glfwSetScrollCallback(win_, func);
     }
-    inline bool should_close() {
+    inline bool should_close() const {
 	return glfwWindowShouldClose(win_);
+    }
+    inline bool is_key_pressed(int key) const {
+	return glfwGetKey(win_, key);
     }
 };
 

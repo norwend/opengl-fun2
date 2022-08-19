@@ -1,4 +1,4 @@
-project('opengl-lightning', 'c', 'cpp',
+project('opengl-fun2', 'c', 'cpp',
   version : '0.1',
   default_options : ['warning_level=3',
                      'cpp_std=c++17'])
@@ -14,9 +14,9 @@ deps = [
   dependency('glew'),
   dependency('glm'),
   dependency('fmt', version: '>=9.0.0')
-  ]
+]
 
-exe = executable('opengl_lightning', sources,
+exe = executable('opengl-fun2', sources,
   install : true,
   include_directories: inc,
   dependencies: deps)

@@ -1,4 +1,5 @@
 #pragma once
+#pragma clang diagnostic ignored "-Wvla-extension"
 
 #include <stdexcept>
 
