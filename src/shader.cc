@@ -1,3 +1,4 @@
+#include "glm/gtc/type_ptr.hpp"
 #include <shader.hh>
 
 unsigned int Shader::compile_shader(unsigned int type, const std::string& contents) {
@@ -58,4 +59,7 @@ void Shader::set_float(const std::string& var, float val) {
 }
 void Shader::set_mat4(const std::string& var, const glm::mat4& val) {
     glUniformMatrix4fv(glGetUniformLocation(this->id_, var.c_str()), 1, GL_FALSE, glm::value_ptr(val));
+}
+void Shader::set_vec3(const std::string& var, const glm::vec3& val) {
+    glUniform3fv(glGetUniformLocation(this->id_, var.c_str()), 1, glm::value_ptr(val));
 }

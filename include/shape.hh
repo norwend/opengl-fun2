@@ -54,6 +54,7 @@ public:
     Cube(Texture tex);
     void draw();
     ~Cube();
+    unsigned int get_vbo() { return VBO_; }
 };
 
 class Rectangle {

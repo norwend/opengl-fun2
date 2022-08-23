@@ -24,5 +24,6 @@ public:
     void set_int(const std::string& var, int val);
     void set_float(const std::string& var, float val);
     void set_mat4(const std::string& var, const glm::mat4& val);
+    void set_vec3(const std::string& var, const glm::vec3& val);
     void use() { glUseProgram(id_); }
 };
