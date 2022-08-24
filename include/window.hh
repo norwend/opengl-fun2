@@ -19,7 +19,7 @@ public:
 
     GLFWwindow* get_win_ptr() const { return win_; }
 
-    void close() {
+    void close() const {
 	glfwSetWindowShouldClose(win_, true);
     }
     
