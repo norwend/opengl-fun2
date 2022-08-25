@@ -128,6 +128,8 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 				     "../shaders/light.frag" };
 	float last_frame = glfwGetTime();
 	float delta_time = 0;
+
+	
 	
 	while (!win.should_close()) {
 	    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -139,10 +141,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
 	    object_lighting_shader.use();
-	    object_lighting_shader.set_vec3("material.ambient",
-					    glm::vec3(0.9f, 0.9f, 0.9f));
-	    object_lighting_shader.set_vec3("material.diffuse",
-					    glm::vec3(0.7f, 0.7f, 0.7f));
+	    object_lighting_shader.set_int("material.diffuse", 0);
 	    object_lighting_shader.set_vec3("material.specular",
 					    glm::vec3(0.5f, 0.5f, 0.5f));
 	    object_lighting_shader.set_float("material.shininess", 64.0f);
