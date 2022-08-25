@@ -96,8 +96,8 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 			      (void*)(3*sizeof(float)));
 	glEnableVertexAttribArray(1);
 	
-	// second, configure the light's VAO (VBO stays the same; the vertices are the
-	// same for the light object which is also a 3D cube)
+	// second, configure the light's VAO (VBO stays the same; the vertices
+	// are the same for the light object which is also a 3D cube)
 	unsigned int lightCubeVAO;
 	glGenVertexArrays(1, &lightCubeVAO);
 	glBindVertexArray(lightCubeVAO);
@@ -134,12 +134,24 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	    process_input(win, delta_time);
+	    glm::vec3 lightColor = {1.0f, 1.0f, 1.0f};
+	    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+	    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
 	    object_lighting_shader.use();
-            object_lighting_shader.set_vec3("objectColor",
-					    glm::vec3(1.0f, 0.5f, 0.31f));
-	    object_lighting_shader.set_vec3("lightColor",
+	    object_lighting_shader.set_vec3("material.ambient",
+					    glm::vec3(0.9f, 0.9f, 0.9f));
+	    object_lighting_shader.set_vec3("material.diffuse",
+					    glm::vec3(0.7f, 0.7f, 0.7f));
+	    object_lighting_shader.set_vec3("material.specular",
+					    glm::vec3(0.5f, 0.5f, 0.5f));
+	    object_lighting_shader.set_float("material.shininess", 64.0f);
+
+	    object_lighting_shader.set_vec3("light.ambient", ambientColor);
+	    object_lighting_shader.set_vec3("light.diffuse", diffuseColor);
+	    object_lighting_shader.set_vec3("light.specular",
 					    glm::vec3(1.0f, 1.0f, 1.0f));
+	    object_lighting_shader.set_vec3("light.position", lightPos);
 
 	    projection = glm::perspective((double)glm::radians(cam.get_zoom()),
 					  16.0/9.0, 0.01, 100.0);
@@ -163,6 +175,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    model = glm::translate(model, lightPos);
 	    model = glm::scale(model, glm::vec3(0.2f)); // меньший куб
 	    light_cube_shader.set_mat4("model", model);
+	    light_cube_shader.set_vec3("lightColor", lightColor);
 	    
 	    glBindVertexArray(lightCubeVAO);
 	    glDrawArrays(GL_TRIANGLES, 0, 36);
