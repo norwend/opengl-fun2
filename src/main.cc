@@ -198,6 +198,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    object_lighting_shader.set_mat4("view", view);
 	    object_lighting_shader.set_mat4("model", model);
 
+	    // ПИЗДЕЦ!
 	    object_lighting_shader.set_vec3("viewPos", cam.get_pos());
 	    object_lighting_shader.set_vec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
 	    object_lighting_shader.set_vec3("dirLight.diffuse", diffuseColor);
@@ -211,6 +212,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    object_lighting_shader.set_vec3("pointLights[0].diffuse", diffuseColor);
 	    object_lighting_shader.set_vec3("pointLights[0].ambient", ambientColor);
 	    object_lighting_shader.set_vec3("pointLights[0].specular", lightColor);
+
 	    object_lighting_shader.set_vec3("pointLights[1].position", pointLightPositions[1]);
 	    object_lighting_shader.set_float("pointLights[1].constant", 1.0);
 	    object_lighting_shader.set_float("pointLights[1].linear", 0.22);
@@ -218,6 +220,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    object_lighting_shader.set_vec3("pointLights[1].diffuse", diffuseColor);
 	    object_lighting_shader.set_vec3("pointLights[1].ambient", ambientColor);
 	    object_lighting_shader.set_vec3("pointLights[1].specular", lightColor);
+
 	    object_lighting_shader.set_vec3("pointLights[2].position", pointLightPositions[2]);
 	    object_lighting_shader.set_float("pointLights[2].constant", 1.0);
 	    object_lighting_shader.set_float("pointLights[2].linear", 0.22);
@@ -225,6 +228,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    object_lighting_shader.set_vec3("pointLights[2].diffuse", diffuseColor);
 	    object_lighting_shader.set_vec3("pointLights[2].ambient", ambientColor);
 	    object_lighting_shader.set_vec3("pointLights[2].specular", lightColor);
+
 	    object_lighting_shader.set_vec3("pointLights[3].position", pointLightPositions[3]);
 	    object_lighting_shader.set_float("pointLights[3].constant", 1.0);
 	    object_lighting_shader.set_float("pointLights[3].linear", 0.22);
@@ -233,6 +237,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    object_lighting_shader.set_vec3("pointLights[3].ambient", ambientColor);
 	    object_lighting_shader.set_vec3("pointLights[3].specular", lightColor);
 
+	    // Рисуем ящики 
 	    glBindVertexArray(cubeVAO);
 	    glDrawArrays(GL_TRIANGLES, 0, 36);
 	    for(unsigned int i = 0; i < 10; i++) {
@@ -246,7 +251,7 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    }
 
 
-	    // рисуем КУБ СВЕТА 
+	    // рисуем КУБЫ СВЕТА 
 	    light_cube_shader.use();
 	    light_cube_shader.set_mat4("projection", projection);
 	    light_cube_shader.set_mat4("view", view);
