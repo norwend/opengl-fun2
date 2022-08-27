@@ -1,6 +1,7 @@
 #include <camera.hh>
 
-Camera::Camera(uint32_t scr_width, uint32_t src_height, glm::vec3 pos, glm::vec3 front) : position_(pos), front_(front) {
+Camera::Camera(uint32_t scr_width, uint32_t src_height, glm::vec3 pos,
+	       glm::vec3 front) : position_(pos), front_(front) {
     lastX = (float)scr_width / 2;
     lastY = (float)src_height / 2;
     up_ = glm::vec3(0.0, 1.0, 0.0);

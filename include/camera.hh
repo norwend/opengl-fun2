@@ -36,4 +36,5 @@ class Camera {
     void move(CameraMovement dir, float delta_time);
 
     glm::vec3 get_pos() { return position_; }
+    glm::vec3 get_front() { return front_; }
 };

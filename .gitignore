@@ -3,6 +3,7 @@
 /.cache/
 /include/.DS_Store
 /src/.DS_Store
+/textures/.DS_Store
 /*/*.*~
 /book_pdf.pdf
 /README.md~

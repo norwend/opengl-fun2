@@ -1,4 +1,7 @@
+#include "glm/trigonometric.hpp"
+#include <_types/_uint32_t.h>
 #include <iostream>
+#include <sys/signal.h>
 #include <vector>
 
 #include <glad/glad.h>
@@ -11,6 +14,7 @@
 #include <window.hh>
 #include <shader.hh>
 #include <camera.hh>
+#include <texture.hh>
 
 #define PROJECT_NAME "opengl-fun2"
 #define W_WIDTH 1280
@@ -36,45 +40,61 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
     try {
 	Window win(W_WIDTH, W_HEIGHT, "Main Window");
 
-	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 	std::vector<float> vertices {
-	     // positions          // normals           // texture coords
-             -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-              0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-              0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-              0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-             -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-             -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-             -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-              0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-              0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-              0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-             -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-             -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-             -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-             -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-             -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-             -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-             -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-             -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-	     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-	     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-	     -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-	     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-	     -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-	     -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-	     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-	     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-	     -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-	     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+	    // positions          // normals           // texture coords
+	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+	    0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+	    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+	    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+	    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+	    
+	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+	    0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+	    0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+	    0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+	    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+	    
+	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+	    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+	    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+	    
+	    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+	    0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+	    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+	    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+	    0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+	    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+	    
+	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+	    0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+	    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+	    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+	    
+	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+	    0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+	    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+	    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+	};
+	std::vector<glm::vec3> cube_positions = {
+	    glm::vec3( 0.0f,  0.0f,   0.0f),
+	    glm::vec3( 2.0f,  5.0f, -15.0f),
+	    glm::vec3(-1.5f, -2.2f,  -2.5f),
+	    glm::vec3(-3.8f, -2.0f, -12.3f),
+	    glm::vec3( 2.4f, -0.4f,  -3.5f),
+	    glm::vec3(-1.7f,  3.0f,  -7.5f),
+	    glm::vec3( 1.3f, -2.0f,  -2.5f),
+	    glm::vec3( 1.5f,  2.0f,  -2.5f),
+	    glm::vec3( 1.5f,  0.2f,  -1.5f),
+	    glm::vec3(-1.3f,  1.0f,  -1.5f)
 	};
 
 	unsigned int VBO, cubeVAO;
@@ -95,6 +115,10 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
 			      (void*)(3*sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+			      (void*)(6*sizeof(float)));
+	glEnableVertexAttribArray(2);
 	
 	// second, configure the light's VAO (VBO stays the same; the vertices
 	// are the same for the light object which is also a 3D cube)
@@ -129,29 +153,43 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	float last_frame = glfwGetTime();
 	float delta_time = 0;
 
-	
-	
+	Texture steel_box_diff_map("../textures/steel_box_diff.png",
+				   GL_TEXTURE0);
+	Texture steel_box_spec_map("../textures/steel_box_spec.png",
+				   GL_TEXTURE1);
+
+	glm::vec3 lightColor = {1.0f, 1.0f, 1.0f};
+	glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+	std::vector<glm::vec3> pointLightPositions = {
+	    glm::vec3( 0.7f,  0.2f,   2.0f),
+	    glm::vec3( 2.3f, -3.3f,  -4.0f),
+	    glm::vec3(-4.0f,  2.0f, -12.0f),
+	    glm::vec3( 0.0f,  0.0f,  -3.0f)
+	};
+
 	while (!win.should_close()) {
+
 	    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	    process_input(win, delta_time);
-	    glm::vec3 lightColor = {1.0f, 1.0f, 1.0f};
-	    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-	    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
+	    
+	    // ставим переменные объекта шейдеру
 	    object_lighting_shader.use();
 	    object_lighting_shader.set_int("material.diffuse", 0);
-	    object_lighting_shader.set_vec3("material.specular",
-					    glm::vec3(0.5f, 0.5f, 0.5f));
+	    object_lighting_shader.set_int("material.specular", 1);
 	    object_lighting_shader.set_float("material.shininess", 64.0f);
 
-	    object_lighting_shader.set_vec3("light.ambient", ambientColor);
-	    object_lighting_shader.set_vec3("light.diffuse", diffuseColor);
-	    object_lighting_shader.set_vec3("light.specular",
-					    glm::vec3(1.0f, 1.0f, 1.0f));
-	    object_lighting_shader.set_vec3("light.position", lightPos);
+	    // используем текстуры
+	    steel_box_diff_map.use();
+	    steel_box_spec_map.use();
+	    
+	    // ставим переменные света шейдеру
 
+	    // матрицы для взгляда в наш бренный мир
 	    projection = glm::perspective((double)glm::radians(cam.get_zoom()),
 					  16.0/9.0, 0.01, 100.0);
 	    view = cam.get_view();
@@ -159,28 +197,77 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	    object_lighting_shader.set_mat4("projection", projection);
 	    object_lighting_shader.set_mat4("view", view);
 	    object_lighting_shader.set_mat4("model", model);
-	    object_lighting_shader.set_vec3("lightPos", lightPos);
+
 	    object_lighting_shader.set_vec3("viewPos", cam.get_pos());
+	    object_lighting_shader.set_vec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+	    object_lighting_shader.set_vec3("dirLight.diffuse", diffuseColor);
+	    object_lighting_shader.set_vec3("dirLight.ambient", ambientColor);
+	    object_lighting_shader.set_vec3("dirLight.specular", lightColor);
+
+	    object_lighting_shader.set_vec3("pointLights[0].position", pointLightPositions[0]);
+	    object_lighting_shader.set_float("pointLights[0].constant", 1.0);
+	    object_lighting_shader.set_float("pointLights[0].linear", 0.22);
+	    object_lighting_shader.set_float("pointLights[0].quadratic", 0.2);
+	    object_lighting_shader.set_vec3("pointLights[0].diffuse", diffuseColor);
+	    object_lighting_shader.set_vec3("pointLights[0].ambient", ambientColor);
+	    object_lighting_shader.set_vec3("pointLights[0].specular", lightColor);
+	    object_lighting_shader.set_vec3("pointLights[1].position", pointLightPositions[1]);
+	    object_lighting_shader.set_float("pointLights[1].constant", 1.0);
+	    object_lighting_shader.set_float("pointLights[1].linear", 0.22);
+	    object_lighting_shader.set_float("pointLights[1].quadratic", 0.2);
+	    object_lighting_shader.set_vec3("pointLights[1].diffuse", diffuseColor);
+	    object_lighting_shader.set_vec3("pointLights[1].ambient", ambientColor);
+	    object_lighting_shader.set_vec3("pointLights[1].specular", lightColor);
+	    object_lighting_shader.set_vec3("pointLights[2].position", pointLightPositions[2]);
+	    object_lighting_shader.set_float("pointLights[2].constant", 1.0);
+	    object_lighting_shader.set_float("pointLights[2].linear", 0.22);
+	    object_lighting_shader.set_float("pointLights[2].quadratic", 0.2);
+	    object_lighting_shader.set_vec3("pointLights[2].diffuse", diffuseColor);
+	    object_lighting_shader.set_vec3("pointLights[2].ambient", ambientColor);
+	    object_lighting_shader.set_vec3("pointLights[2].specular", lightColor);
+	    object_lighting_shader.set_vec3("pointLights[3].position", pointLightPositions[3]);
+	    object_lighting_shader.set_float("pointLights[3].constant", 1.0);
+	    object_lighting_shader.set_float("pointLights[3].linear", 0.22);
+	    object_lighting_shader.set_float("pointLights[3].quadratic", 0.2);
+	    object_lighting_shader.set_vec3("pointLights[3].diffuse", diffuseColor);
+	    object_lighting_shader.set_vec3("pointLights[3].ambient", ambientColor);
+	    object_lighting_shader.set_vec3("pointLights[3].specular", lightColor);
 
 	    glBindVertexArray(cubeVAO);
 	    glDrawArrays(GL_TRIANGLES, 0, 36);
+	    for(unsigned int i = 0; i < 10; i++) {
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, cube_positions[i]);
+		float angle = 20.0f * i;
+		model = glm::rotate(model, glm::radians(angle),
+				    glm::vec3(1.0f, 0.3f, 0.5f));
+	        object_lighting_shader.set_mat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	    }
 
 
-	    // also draw the lamp object
+	    // рисуем КУБ СВЕТА 
 	    light_cube_shader.use();
 	    light_cube_shader.set_mat4("projection", projection);
 	    light_cube_shader.set_mat4("view", view);
-	    model = glm::mat4(1.0f);
-	    model = glm::translate(model, lightPos);
-	    model = glm::scale(model, glm::vec3(0.2f)); // меньший куб
-	    light_cube_shader.set_mat4("model", model);
-	    light_cube_shader.set_vec3("lightColor", lightColor);
-	    
-	    glBindVertexArray(lightCubeVAO);
-	    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	    for (auto pos : pointLightPositions) {
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, pos);
+		model = glm::scale(model, glm::vec3(0.2f)); // меньший куб
+		
+		light_cube_shader.set_mat4("model", model);
+		light_cube_shader.set_vec3("lightColor", lightColor);
+		
+		glBindVertexArray(lightCubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	    }
+
+
 
 	    glfwSwapBuffers(win.get_win_ptr());
 	    glfwPollEvents();
+
 	    float currfr = glfwGetTime();
 	    delta_time = currfr - last_frame;
 	    last_frame = currfr;
