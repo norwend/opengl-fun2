@@ -2,7 +2,7 @@
 
 void Texture::use() {
     glActiveTexture(texture_num_);
-    glBindTexture(GL_TEXTURE_2D, texture_id_);
+    glBindTexture(GL_TEXTURE_2D, id);
 }
 
 Texture::Texture(const std::string& file_name, GLenum tex_num)
@@ -16,8 +16,8 @@ Texture::Texture(const std::string& file_name, GLenum tex_num)
     unsigned char* tex_data = stbi_load(file_name.c_str(), &width, &height,
 					&nr_channels, 0);
     
-    glGenTextures(1, &texture_id_);
-    glBindTexture(GL_TEXTURE_2D, texture_id_);
+    glGenTextures(1, &id);
+    glBindTexture(GL_TEXTURE_2D, id);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

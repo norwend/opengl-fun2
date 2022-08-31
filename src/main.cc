@@ -1,7 +1,4 @@
-#include "glm/trigonometric.hpp"
-#include <_types/_uint32_t.h>
 #include <iostream>
-#include <sys/signal.h>
 #include <vector>
 
 #include <glad/glad.h>
