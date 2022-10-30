@@ -1,7 +1,3 @@
-#include "glm/trigonometric.hpp"
-#include <_types/_uint32_t.h>
-#include <iostream>
-#include <sys/signal.h>
 #include <vector>
 
 #include <glad/glad.h>
@@ -146,16 +142,16 @@ int main(int argc [[maybe_unused]], char **argv [[maybe_unused]]) {
 	win.mouse_callback(mouse_callback);
 
 	
-	Shader object_lighting_shader = { "../shaders/colors.vert",
-					 "../shaders/colors.frag" };
-	Shader light_cube_shader = { "../shaders/light.vert",
-				     "../shaders/light.frag" };
+	Shader object_lighting_shader = { "../../shaders/colors.vert",
+					 "../../shaders/colors.frag" };
+	Shader light_cube_shader = { "../../shaders/light.vert",
+				     "../../shaders/light.frag" };
 	float last_frame = glfwGetTime();
 	float delta_time = 0;
 
-	Texture steel_box_diff_map("../textures/steel_box_diff.png",
+	Texture steel_box_diff_map("../../textures/steel_box_diff.png",
 				   GL_TEXTURE0);
-	Texture steel_box_spec_map("../textures/steel_box_spec.png",
+	Texture steel_box_spec_map("../../textures/steel_box_spec.png",
 				   GL_TEXTURE1);
 
 	glm::vec3 lightColor = {1.0f, 1.0f, 1.0f};

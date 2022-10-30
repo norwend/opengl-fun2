@@ -9,12 +9,11 @@
 
 class Texture {
 public:
-    Texture(const std::string& file_name);
+    explicit Texture(const std::string& file_name) : Texture(file_name, GL_TEXTURE0) {}
     Texture(const std::string& file_name, GLenum tex_num);
-    void use();
     int get_tex_num();
+    void use();
 private:
-    unsigned int texture_id_;
+    unsigned int id_;
     GLenum texture_num_ = GL_TEXTURE0;
-    unsigned int create(const std::string& file_name);
 };
