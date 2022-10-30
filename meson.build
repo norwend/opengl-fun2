@@ -13,7 +13,6 @@ deps = [
   dependency('glfw3'),
   dependency('glew'),
   dependency('glm'),
-  dependency('assimp'),
   dependency('fmt', version: '>=9.0.0')
 ]
 
